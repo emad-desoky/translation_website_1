@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
 
@@ -6,6 +7,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
+
+  const router = useRouter();
 
   const handleScroll = () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -68,9 +71,14 @@ const Navbar = () => {
             isOpen ? "block" : "hidden"
           } lg:flex lg:space-x-8 lg:items-center lg:ml-auto lg:mt-0 mt-2 w-full lg:w-auto`}
         >
-          {["Home", "Blog", "About Us", "Contact Us"].map((link) => (
+          {[
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blogs" },
+            { name: "About Us", path: "/about" },
+            { name: "Contact Us", path: "/contact" },
+          ].map((link) => (
             <motion.div
-              key={link}
+              key={link.name}
               className="nav-link text-lg font-semibold text-gray-300 block lg:inline-block mt-2 lg:mt-0 px-3 py-1 rounded-full"
               whileHover={{
                 color: "#ffffff",
@@ -79,8 +87,9 @@ const Navbar = () => {
                 borderRadius: "9999px", // Full rounding
               }}
               transition={{ duration: 0.2 }}
+              onClick={() => router.push(link.path)}
             >
-              {link}
+              {link.name}
             </motion.div>
           ))}
 
